@@ -2,18 +2,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
 			message: null,
-			demo: [
-				{
-					title: "FIRST",
-					background: "white",
-					initial: "white"
-				},
-				{
-					title: "SECOND",
-					background: "white",
-					initial: "white"
-				}
-			]
+			token: null
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -33,20 +22,43 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log("Error loading message from backend", error)
 				}
 			},
-			changeColor: (index, color) => {
-				//get the store
-				const store = getStore();
 
-				//we have to loop the entire demo array to look for the respective index
-				//and change its color
-				const demo = store.demo.map((elm, i) => {
-					if (i === index) elm.background = color;
-					return elm;
-				});
+			//handle the process of requesting a token
+			//if successful, it will put the token string in the store to allow for future use
+			login: async (email, password) => {
+				const options = {
+					method: "POST",
+					mode: 'cors',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify({
+						email: email,
+						password: password
+					})
+				}
 
-				//reset the global store
-				setStore({ demo: demo });
+				const response = await fetch('https://zany-halibut-4jg4p4j557r5376jq-3001.app.github.dev/api/token', options)
+
+				if (!response.ok) {
+					console.log("Error: ", response.statusText, response.status)
+					return false;
+				}
+
+				const data = await response.json();
+				console.log('This came from the backend: ', data);
+				setStore({token: data.access_token})
+				return true;
 			}
+
+
+			//signup action
+
+			//validation action
+
+			//logout action
+		
+
 		}
 	};
 };
