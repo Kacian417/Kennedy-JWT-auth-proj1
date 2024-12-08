@@ -12,7 +12,7 @@ const Login = () => {
 
     const handleClick = () => {
         actions.login(email, password).then(() => {
-            navigate("/")
+            navigate("/private")
         })
     }
     
