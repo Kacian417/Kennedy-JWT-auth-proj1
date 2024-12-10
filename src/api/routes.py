@@ -40,7 +40,7 @@ def generate_token():
         return jsonify({"msg": "Bad email or password"}), 401
 
     #if the user does exist, creat an access token for them and return a response
-    access_token = create_access_token(identity=user.id)
+    access_token = create_access_token(identity=str(user.id))
     response = {
         "access_token": access_token,
         "user_id": user.id,
@@ -96,10 +96,10 @@ def go_to_private():
 
     user_id = get_jwt_identity()
     
-    user = User.query.get(id=user_id).first()
+    user = User.query.filter_by(id=user_id).first()
 
     response = {
-        'msg': f'Hello {user.email}, here is your private page'
+        'msg': f'Hello {user.email}!'
     }
     return jsonify(response), 200
 

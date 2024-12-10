@@ -3,7 +3,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 		store: {
 			loginMessage: null,
 			token: null, 
-			signUpMessage: null
+			signUpMessage: null,
+			isLoginSuccessful: false,
+			isSignupSuccessful: false
+
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -47,10 +50,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 
 				const data = await response.json();
-				console.log('This came from the backend: ', data);
+				//console.log('This came from the backend: ', data);
+				sessionStorage.setItem("token", data.access_token)
 				setStore({
 					token: data.access_token,
-					loginMessage: data.msg
+					loginMessage: data.msg,
+					isLoginSuccessful: true
 				})
 				return true;
 			},
@@ -74,22 +79,37 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return {
 						error: {
 							status: response.status,
-							statusText: response.statusText
+							statusText: response.statusText,
+							signUpMessage: data.msg
 						}
 					}
 				}
 				const data = await response.json()
 				setStore({
+					isSignupSuccessful: true,
 					signUpMessage: data.msg
 				})
 				return data;
-			}
+			},
 
-			//validation action
+			//validation/persistence action
+			syncSessionTokenFromStore: () => {
+				const sessionToken = sessionStorage.getItem('token');
+				if(sessionToken && sessionToken != '' && sessionToken != undefined) {
+					setStore({token: sessionToken})
+				}
+			},
 
 			//logout action
-		
-
+			logout: () => {
+				sessionStorage.removeItem('token')
+				setStore({
+					loginMessage: null,
+					token: null, 
+					signUpMessage: null,
+					isLoginSuccessful: false
+				})
+			}
 		}
 	};
 };

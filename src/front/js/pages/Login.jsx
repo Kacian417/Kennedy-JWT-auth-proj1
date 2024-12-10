@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import { useNavigate, Link, Navigate } from 'react-router-dom';
 import { Context } from '../store/appContext';
 
@@ -11,21 +11,18 @@ const Login = () => {
     const [password, setPassword] = useState("");
 
     const handleClick = () => {
-        actions.login(email, password).then(() => {
-            navigate("/private")
-        })
+        actions.login(email, password);
     }
+
+    useEffect(() => {
+        if(store.isLoginSuccessful) {
+            navigate("/private")
+        }
+    }, [store.isLoginSuccessful])
     
     return (
         <>
             <div className="text-center mt-5">
-                {   //ternary - if ther is an acceptable token ? will display the home page : remain on the login page
-                    (store.token && store.token != "" && store.token != undefined) 
-                        ?
-                        <>
-                            <h1>You are logged in!</h1>
-                        </>
-                        :
                         <>
                             <h1>Login</h1>
                             <div>
@@ -52,7 +49,7 @@ const Login = () => {
                                 </button>
                             </div>
                         </>
-                }
+                
             </div>
         </>
     );
