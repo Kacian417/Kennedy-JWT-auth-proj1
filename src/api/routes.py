@@ -38,7 +38,7 @@ def generate_token():
 
     if user is None:
         return jsonify({"msg": "Bad email or password"}), 401
-
+ 
     #if the user does exist, creat an access token for them and return a response
     access_token = create_access_token(identity=str(user.id))
     response = {
@@ -67,7 +67,7 @@ def register_user():
     #make a condition that the user is not None and that the email exists
     if user is not None and user.email == email:
         response = {
-            'msg: "User already exists'
+            'msg': "User already exists"
         }
         return jsonify(response), 403
     
@@ -90,9 +90,9 @@ def register_user():
 # Protect a route with jwt_required, which will kick out requests
 # without a valid JWT present.
 # create a route for /private that will display the Prvate page based on the users access token
-@api.route('/private', methods=['GET'])
+@api.route('/protected', methods=['GET'])
 @jwt_required()
-def go_to_private():
+def protected():
 
     user_id = get_jwt_identity()
     

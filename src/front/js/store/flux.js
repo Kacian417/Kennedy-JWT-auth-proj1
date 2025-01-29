@@ -42,7 +42,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					})
 				}
 
-				const response = await fetch('https://zany-halibut-4jg4p4j557r5376jq-3001.app.github.dev/api/token', options)
+				const response = await fetch('https://fantastic-invention-g459v94jjqvgfvg4x-3001.app.github.dev/api/token', options)
 
 				if (!response.ok) {
 					console.log("Error: ", response.statusText, response.status)
@@ -68,11 +68,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 					headers: {
 						'Content-Type': 'application/json'
 					},
-					body: JSON.stringify({email: email,
+					body: JSON.stringify({
+						email: email,
 						password: password
 					})
 				}
-				const response = await fetch('https://zany-halibut-4jg4p4j557r5376jq-3001.app.github.dev/api/signup', options)
+				const response = await fetch('https://fantastic-invention-g459v94jjqvgfvg4x-3001.app.github.dev/api/signup', options)
+				
 
 				if (!response.ok) {
 					const data = await response.json()

@@ -11,7 +11,9 @@ const Login = () => {
     const [password, setPassword] = useState("");
 
     const handleClick = () => {
-        actions.login(email, password);
+        actions.login(email, password).then(() => {
+            navigate("/private")
+        })
     }
 
     useEffect(() => {
@@ -51,6 +53,7 @@ const Login = () => {
                         </>
                 
             </div>
+            
         </>
     );
 }
